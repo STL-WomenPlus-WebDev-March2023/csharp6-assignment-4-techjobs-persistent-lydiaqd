@@ -1,15 +1,20 @@
 ﻿@using TechJobs6Persistent.ViewModels
-
+@model AddJobViewModel
 
 <h1>Add Job</h1>
 
 <form asp-controller="Job" asp-action="Add" method="post">
     <div class="form-group">
-        <label>Name</label>
-        <input class="form-control" />
-        <span></span>
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <br />
+
+    <div class="form-group">
+        <label asp-for="SelectedEmployer">Employer</label>
+        <select asp-for="SelectedEmployer" asp-items="Model.EmployerList"></select>
+    </div>
 
     <input type="submit" value="Add Job" />
 </form>

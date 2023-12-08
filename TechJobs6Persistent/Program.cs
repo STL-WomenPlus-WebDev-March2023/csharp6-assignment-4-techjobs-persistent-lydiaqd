@@ -1,10 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TechJobs6Persistent.Data;
 
+var connectionString = "server=127.0.0.1;user=TechJobs;password=TechJobs;database=techjobs";
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Builder set up database
+builder.Services.AddDbContext<JobDbContext>(context => context.UseMySql(connectionString, serverVersion));
 
 var app = builder.Build();
 
@@ -28,4 +34,3 @@ app.MapControllerRoute(
     pattern: "{controller=Job}/{action=Index}/{id?}");
 
 app.Run();
-
