@@ -34,21 +34,14 @@ namespace TechJobs6Persistent.Controllers
             return View(jobs);
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
             {
-                List<SelectListItem> ListItems = new List<SelectListItem> ();
-                foreach(Employer employer in context.Employers)
-                {
-                    ListItems.Add(new SelectListItem { Text = employer.Name, Value = employer.Id.ToString()});
-                }
+                List<Employer> employerList = context.Employers.ToList();
 
-                AddJobViewModel addJobViewModel = new AddJobViewModel
-                {
-                    EmployerList = ListItems,
-                    Name = "Steve"
-                };
-
+                AddJobViewModel addJobViewModel = new AddJobViewModel(employerList);
+       
                 return View(addJobViewModel);
             }
 
@@ -60,17 +53,16 @@ namespace TechJobs6Persistent.Controllers
         [HttpPost]
         public IActionResult Add(AddJobViewModel addJobViewModel)
         {
-            Console.WriteLine(addJobViewModel);
-            int EmployerId;
-            if (ModelState.IsValid && Int32.TryParse(addJobViewModel.SelectedEmployer, out EmployerId))
+            if (ModelState.IsValid)
             {
-                Job newJob = new Job(addJobViewModel.Name)
+                Employer selectedEmployer = context.Employers.Find(addJobViewModel.EmployerId);
+                Job newJob = new Job
                 {
-                    EmployerId = EmployerId,
-                    Employer = context.Employers.Find(EmployerId)
+                    Name = addJobViewModel.Name,
+                    Employer = selectedEmployer
                 };
 
-                context.Add(newJob);
+                context.Jobs.Add(newJob);
 
                 context.SaveChanges();
 

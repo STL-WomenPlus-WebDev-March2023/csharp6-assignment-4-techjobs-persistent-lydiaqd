@@ -5,7 +5,6 @@
     ViewData["Title"] = "Tech Jobs Persistent";
 }
 
-
 <div class="text-center">
     <h1 class="display-4">Tech Jobs & Persistent Data</h1>
     @if (Model.Count == 0)
@@ -23,7 +22,7 @@
             {
                 <tr>
                     <td><a asp-controller="Job" asp-action="Detail" asp-route-id="@job.Id">@job.Name</a></td>
-                    <td>@job.Employer.Name</td>
+                    <td><a asp-controller="Employer" asp-action="About" asp-route-id="@job.Employer.Id">@job.Employer.Name</a></td>
                 </tr>
             }
         </table>
